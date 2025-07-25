@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Accessing Device...</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: #00ff00;
+      font-family: monospace;
+      overflow: hidden;
+    }
+
+    .container {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: start;
+      padding: 20px;
+      box-sizing: border-box;
+      animation: scrollUp 30s linear infinite;
+    }
+
+    @keyframes scrollUp {
+      0% {
+        transform: translateY(100%);
+      }
+      100% {
+        transform: translateY(-100%);
+      }
+    }
+
+    .line {
+      white-space: pre;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="terminal"></div>
+
+  <script>
+    const lines = [
+      "[ACCESS GRANTED]",
+      "Initializing protocol...",
+      "Bypassing security...",
+      "Connecting to target device...",
+      "Retrieving data packets...",
+      "Decrypting files...",
+      "Uploading malware...",
+      "Connection stable",
+      "Camera access: ON",
+      "Microphone: ON",
+      "GPS Location: Locked",
+      "Data transfer: 54%",
+      "Injecting script...",
+      "Admin privileges obtained",
+      "Remote control: ACTIVE",
+      "[PROCESS COMPLETE]"
+    ];
+
+    const container = document.getElementById("terminal");
+
+    // Web Audio setup for typing sound
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playBeep() {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.type = "square";
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      gainNode.gain.setValueAtTime(0.03, audioContext.currentTime);
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.05);
+    }
+
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i >= 200) {
+        clearInterval(interval);
+        return;
+      }
+      const line = document.createElement("div");
+      line.className = "line";
+      const randomLine = lines[Math.floor(Math.random() * lines.length)];
+      line.textContent = randomLine;
+      container.appendChild(line);
+
+      playBeep();
+      i++;
+    }, 80);
+  </script>
+</body>
+</html>
